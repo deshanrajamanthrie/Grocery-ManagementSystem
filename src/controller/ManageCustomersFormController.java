@@ -16,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.CustomerDTO;
 import view.tdm.CustomerTM;
 
 import java.io.IOException;
@@ -121,6 +122,10 @@ public class ManageCustomersFormController {
         String name = txtCustomerName.getText();
         String address = txtCustomerAddress.getText();
 
+       CustomerDTO c = new CustomerDTO(txtCustomerId.getText(),txtCustomerName.getText(),
+               txtCustomerAddress.getText());
+
+
         if (!name.matches("[A-Za-z ]+")) {
             new Alert(Alert.AlertType.ERROR, "Invalid name").show();
             txtCustomerName.requestFocus();
@@ -137,21 +142,14 @@ public class ManageCustomersFormController {
                 if (existCustomer(id)) {
                     new Alert(Alert.AlertType.ERROR, id + " already exists").show();
                 }
-                Connection connection = DBConnection.getDbConnection().getConnection();
-                PreparedStatement pstm = connection.prepareStatement("INSERT INTO Customer (id,name, address) VALUES (?,?,?)");
-                pstm.setString(1, id);
-                pstm.setString(2, name);
-                pstm.setString(3, address);
-                pstm.executeUpdate();
-
                 tblCustomers.getItems().add(new CustomerTM(id, name, address));
+                CustomerDaoImpl customerDao = new CustomerDaoImpl();
+                customerDao.saveCustomer(c);
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to save the customer " + e.getMessage()).show();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-
-
         } else {
             /*Update customer*/
             try {
