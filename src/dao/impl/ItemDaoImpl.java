@@ -17,5 +17,17 @@ public class ItemDaoImpl {
         }
         return allItems;
     }
+    public boolean deleteItem(String id) throws SQLException, ClassNotFoundException {
+        return SQLutil.executeUpdate("DELETE FROM Item WHERE code=?",id);
+    }
+    public boolean saveItems(ItemDTO dto) throws SQLException, ClassNotFoundException {
+        return SQLutil.executeUpdate("INSERT INTO Item (code, description, unitPrice, qtyOnHand) VALUES (?,?,?,?)",
+              dto.getCode(),dto.getDescription(),dto.getUnitPrice(),dto.getQtyOnHand());
+    }
+    public boolean updateItem(ItemDTO dto) throws SQLException, ClassNotFoundException {
+        return SQLutil.executeUpdate("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?",
+               dto.getDescription(),dto.getUnitPrice(),dto.getQtyOnHand(),dto.getCode());
+    }
+
 
 }
