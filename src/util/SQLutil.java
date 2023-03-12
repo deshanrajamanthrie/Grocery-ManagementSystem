@@ -18,10 +18,10 @@ public class SQLutil {
         }
         return stm;
     }
-    public static ResultSet exexuteQurey(String sql,Object parms) throws SQLException, ClassNotFoundException {
+    public static ResultSet exeuteQurey(String sql,Object... parms) throws SQLException, ClassNotFoundException {
         return execute(sql,parms).executeQuery();
     }
-    public static boolean executeUpdate(String sql,Object parms) throws SQLException, ClassNotFoundException {
+    public static boolean executeUpdate(String sql,Object... parms) throws SQLException, ClassNotFoundException {
         return execute(sql, parms).executeUpdate()>0;
     }
 }
